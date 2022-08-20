@@ -1,4 +1,4 @@
-import { LOGIN_ROUTE, CHAT_ROUTE } from "./utils/consts";
+import { LOGIN_ROUTE, CHAT_ROUTE } from "../utils/consts";
 import { Login } from "./Login";
 import { Chat } from "./Chat";
 
