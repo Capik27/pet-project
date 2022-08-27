@@ -96,17 +96,14 @@ export const Chat = () => {
       timeData.setHours(timeData.getHours() - timeDiff);
     }
 
-    //console.log(timeData, );
-
     const msgRef = doc(collection(firestore, "messages"));
     await setDoc(msgRef, {
       uid: user.uid,
       displayName: user.displayName,
       text: inputValue,
+      timezoneoff: timeData.getTimezoneOffset(),
       createdAt: timeData,
     });
-
-    //Timestamp.fromDate(new Date("December 10, 1815"))   new Date().getTime()  // toDate()
 
     chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
     setInputValue("");
