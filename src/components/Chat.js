@@ -82,13 +82,20 @@ export const Chat = () => {
     e.preventDefault();
     setSendLoading(true);
 
-    let timeData = Timestamp.now().toDate();
-    const timeDiff_mins = timeData.getTimezoneOffset();
-    const MSK_timeDiff = -180;
-    const minutesDiff = Math.abs(timeDiff_mins) + MSK_timeDiff;
-    timeData.setMinutes(timeData.getMinutes() - minutesDiff);
+    // const hh = new Date(2022, 8, 27, 22, 49, 0, 0);
+    // console.log("hhs", hh, hh.getTimezoneOffset());
 
-    //console.log(timeData, timeDiff_mins);
+    let timeData = Timestamp.now().toDate();
+    console.log(timeData);
+    console.log(timeData.getTimezoneOffset());
+    const USER_timeDiffmins = timeData.getTimezoneOffset();
+    const MSK_timeDiffmins = -180;
+    if (USER_timeDiffmins !== MSK_timeDiffmins) {
+      const timeDiff = (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60;
+      timeData.setHours(timeData.getHours() - timeDiff);
+    }
+
+    //console.log(timeData, );
 
     const msgRef = doc(collection(firestore, "messages"));
     await setDoc(msgRef, {

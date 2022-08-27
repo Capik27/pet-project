@@ -29,7 +29,7 @@ export function getDateFromMessage(d) {
   const date = trueData.getDate();
   const month = MONTH_NAME[trueData.getMonth()];
 
-  const hour = trueData.getHours() + 1;
+  const hour = trueData.getHours();
   let x = trueData.getMinutes();
   const mins = x > 9 ? x : `0${x}`;
 
