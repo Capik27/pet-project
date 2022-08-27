@@ -91,7 +91,8 @@ export const Chat = () => {
     const USER_timeDiffmins = timeData.getTimezoneOffset();
     const MSK_timeDiffmins = -180;
     if (USER_timeDiffmins !== MSK_timeDiffmins) {
-      const timeDiff = (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60;
+      const timeDiff =
+        (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60 - 1;
       timeData.setHours(timeData.getHours() - timeDiff);
     }
 
