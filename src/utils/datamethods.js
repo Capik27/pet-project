@@ -1,6 +1,10 @@
+//import { Timestamp } from "firebase/firestore";
+
 export function datasort(a, b) {
-  const c = new Date(a.createdAt).getTime();
-  const d = new Date(b.createdAt).getTime();
+  const c = a.createdAt.toDate().getTime();
+  //console.log("C", c);
+  const d = b.createdAt.toDate().getTime();
+  //console.log("D", d);
   return c - d;
 }
 
@@ -20,8 +24,8 @@ const MONTH_NAME = [
 ];
 
 export function getDateFromMessage(d) {
-  const trueData = new Date(d);
-
+  //console.log("d", d.createdAt.toDate(), typeof d.createdAt.toDate());
+  const trueData = d.createdAt.toDate();
   const date = trueData.getDate();
   const month = MONTH_NAME[trueData.getMonth()];
 

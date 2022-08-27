@@ -59,7 +59,7 @@ export const Register = () => {
     //check name + email
     const nameValid = name.length > 0 ? true : false;
     const emailValid =
-      email.length > 10 && email.includes("@") && email.includes(".")
+      email.length >= 10 && email.includes("@") && email.includes(".")
         ? true
         : false;
 

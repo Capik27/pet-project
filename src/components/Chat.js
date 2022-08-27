@@ -1,7 +1,13 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { setDoc, doc, collection, orderBy } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  Timestamp,
+  collection,
+  orderBy,
+} from "firebase/firestore";
 //-----------------------
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -62,7 +68,7 @@ export const Chat = () => {
                 marginLeft: 6,
               }}
             >
-              {getDateFromMessage(message.createdAt)}
+              {getDateFromMessage(message)}
             </Typography>
           </Typography>
           <Typography variant="body2" component="span">
@@ -81,8 +87,10 @@ export const Chat = () => {
       uid: user.uid,
       displayName: user.displayName,
       text: inputValue,
-      createdAt: new Date().getTime(),
+      createdAt: Timestamp.now().toDate(),
     });
+
+    //Timestamp.fromDate(new Date("December 10, 1815"))   new Date().getTime()  // toDate()
 
     chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
     setInputValue("");
@@ -106,7 +114,7 @@ export const Chat = () => {
         mt={1.5}
         gap={1}
         direction={"column"}
-        style={{ height: window.innerHeight - 60 }}
+        style={{ height: window.innerHeight - 60, flexWrap: "nowrap" }}
       >
         <Paper
           ref={chatWindow}
@@ -146,8 +154,10 @@ export const Chat = () => {
           noValidate
           style={{
             display: "flex",
-            width: "100%",
+            width: "99%",
             flexDirection: "column",
+            justifyContent: "center",
+            alignSelf: "center",
             gap: 8,
           }}
           autoComplete="off"
@@ -155,6 +165,7 @@ export const Chat = () => {
         >
           <TextField
             focused
+            fullWidth
             inputRef={inputWindow}
             disabled={sendLoading}
             color="warning"
@@ -165,6 +176,7 @@ export const Chat = () => {
             onChange={handleInputValueChange}
           />
           <LoadingButton
+            fullWidth
             type="submit"
             onClick={sendMessage}
             loadingPosition="center"
