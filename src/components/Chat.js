@@ -101,7 +101,7 @@ export const Chat = () => {
       uid: user.uid,
       displayName: user.displayName,
       text: inputValue,
-      timezoneoff: timeData.getTimezoneOffset(),
+      timezoneoff: USER_timeDiffmins,
       createdAt: timeData,
     });
 
