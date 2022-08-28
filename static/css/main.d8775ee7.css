@@ -1,0 +1,2 @@
+*{box-sizing:border-box;margin:0;padding:0}@-webkit-keyframes msgFade{0%{opacity:0}to{opacity:100%}}@keyframes msgFade{0%{opacity:0}to{opacity:100%}}.msgAnimation{-webkit-animation:msgFade .44s;animation:msgFade .44s}::-webkit-scrollbar{background-color:initial;width:4px}::-webkit-scrollbar-thumb{background-color:#4428b42f;border:.5px solid hsla(0,0%,100%,.062);border-radius:2px}::-webkit-scrollbar-track{background-color:initial}
+/*# sourceMappingURL=main.d8775ee7.css.map*/
