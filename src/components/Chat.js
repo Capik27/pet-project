@@ -8,7 +8,8 @@ import {
   collection,
   orderBy,
 } from "firebase/firestore";
-import { formatInTimeZone } from "date-fns-tz";
+import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
+
 //-----------------------
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -90,17 +91,15 @@ export const Chat = () => {
     e.preventDefault();
     setSendLoading(true);
 
-    //const hh =
-    //const fhh = formatInTimeZone(Timestamp.now().toDate(), "Europe/Moscow", "yyyy-MM-dd HH:mm:ss zzz");
-    //console.log("fhhs/:", hh, typeof hh);
+    //const hh = Timestamp.now().toDate();
 
-    let timeData = new Date(
-      formatInTimeZone(
-        Timestamp.now().toDate(),
-        "Europe/Moscow",
-        "yyyy-MM-dd HH:mm:ss zzz"
-      )
-    );
+    const hh = new Date(Timestamp.now().toDate());
+    const timeZone = "Europe/Moscow";
+    const zonedDate = utcToZonedTime(hh, timeZone);
+
+    //console.log("hhs/:", hh, zonedDate);
+
+    let timeData = zonedDate; //Timestamp.now().toDate();
 
     //console.log(timeData);
     //console.log(timeData.getTimezoneOffset());
