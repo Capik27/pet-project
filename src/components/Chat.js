@@ -136,14 +136,18 @@ export const Chat = () => {
         mt={1.5}
         gap={1}
         direction={"column"}
-        style={{ height: window.innerHeight - 60, flexWrap: "nowrap" }}
+        style={{
+          height: window.innerHeight - 60,
+          maxHeight: window.innerHeight - 60,
+          flexWrap: "nowrap",
+        }}
       >
         <Paper
           ref={chatWindow}
           variant="outlined"
           style={{
             width: "100%",
-            height: "60vh",
+            height: "66vh",
             overflowY: "auto",
             overflowX: "hidden",
             background: BG_CHAT_COLOR,
