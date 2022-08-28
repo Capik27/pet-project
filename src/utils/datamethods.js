@@ -1,6 +1,3 @@
-//import { Timestamp } from "firebase/firestore";
-import { formatInTimeZone } from "date-fns-tz";
-
 export function datasort(a, b) {
   const c = a.createdAt.toDate().getTime();
   //console.log("C", c);
@@ -25,13 +22,13 @@ const MONTH_NAME = [
 ];
 
 export function getDateFromMessage(d) {
-  //console.log("d", d.createdAt.toDate(), typeof d.createdAt.toDate());
+  //console.log("d", d.createdAt.toDate());
   const trueData = d.createdAt.toDate();
   //console.log("truedata", trueData);
   const date = trueData.getDate();
   const month = MONTH_NAME[trueData.getMonth()];
 
-  const hour = trueData.getHours() + 1;
+  const hour = trueData.getHours();
   let x = trueData.getMinutes();
   const mins = x > 9 ? x : `0${x}`;
 

@@ -4,7 +4,8 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
   setDoc,
   doc,
-  Timestamp,
+  query,
+  serverTimestamp,
   collection,
   orderBy,
 } from "firebase/firestore";
@@ -39,9 +40,11 @@ export const Chat = () => {
   const inputWindow = useRef(null);
   const [inputValue, setInputValue] = useState("");
   const [sendLoading, setSendLoading] = useState(false);
-  const [messages, loading, error] = useCollectionData(
-    collection(firestore, "messages"),
-    orderBy("createdAt")
+
+  const msgCollection = collection(firestore, "messages");
+  const queryMsg = query(msgCollection, orderBy("createdAt"));
+  const [messages, loading, error] = query(
+    useCollectionData(queryMsg, orderBy("createdAt"))
   );
 
   useEffect(() => {
@@ -50,78 +53,64 @@ export const Chat = () => {
   }, [messages, sendLoading]);
 
   const messagesList = messages
-    ? messages.sort(datasort).map((message, index) => (
-        <Paper
-          variant="outlined"
-          key={index}
-          style={{
-            width: "fit-content",
-            height: "min-content",
-            minWidth: CHAT_MIN_WIDTH,
-            display: "inline-flex",
-            alignSelf: user.uid === message.uid ? "flex-end" : "flex-start",
-            backgroundColor:
-              user.uid === message.uid
-                ? CHAT_MY_MSG_BG_COLOR
-                : CHAT_OTHER_MSG_BG_COLOR,
-            flexDirection: "column",
-            padding: "0 5px",
-          }}
-        >
-          <Typography variant="subtitle2" component="div">
-            {user.uid === message.uid ? user.displayName : message.displayName}
-            <Typography
-              variant="caption"
-              component="span"
+    ? messages.map(
+        (message, index) =>
+          message.createdAt && (
+            <Paper
+              className="msgAnimation"
+              variant="outlined"
+              key={index}
               style={{
-                marginLeft: 6,
+                width: "fit-content",
+                height: "min-content",
+                minWidth: CHAT_MIN_WIDTH,
+                display: "inline-flex",
+                alignSelf: user.uid === message.uid ? "flex-end" : "flex-start",
+                backgroundColor:
+                  user.uid === message.uid
+                    ? CHAT_MY_MSG_BG_COLOR
+                    : CHAT_OTHER_MSG_BG_COLOR,
+                flexDirection: "column",
+                padding: "0 5px",
               }}
             >
-              {getDateFromMessage(message)}
-            </Typography>
-          </Typography>
-          <Typography variant="body2" component="span">
-            {message.text}
-          </Typography>
-        </Paper>
-      ))
+              <Typography variant="subtitle2" component="div">
+                {user.uid === message.uid
+                  ? user.displayName
+                  : message.displayName}
+                <Typography
+                  variant="caption"
+                  component="span"
+                  style={{
+                    marginLeft: 6,
+                  }}
+                >
+                  {getDateFromMessage(message)}
+                </Typography>
+              </Typography>
+              <Typography variant="body2" component="span">
+                {message.text}
+              </Typography>
+            </Paper>
+          )
+      )
     : [];
 
   const sendMessage = async (e) => {
     e.preventDefault();
     setSendLoading(true);
 
-    //const hh = Timestamp.now().toDate();
-
-    const hh = new Date(Timestamp.now().toDate());
-    const timeZone = "Europe/Moscow";
-    const zonedDate = utcToZonedTime(hh, timeZone);
-
-    //console.log("hhs/:", hh, zonedDate);
-
-    let timeData = zonedDate; //Timestamp.now().toDate();
-
-    //console.log(timeData);
-    //console.log(timeData.getTimezoneOffset());
-    //const USER_timeDiffmins = timeData.getTimezoneOffset();
-    //const MSK_timeDiffmins = -180;
-    //if (USER_timeDiffmins !== MSK_timeDiffmins) {
-    //  const timeDiff =
-    //    (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60 - 1;
-    //  timeData.setHours(timeData.getHours() - timeDiff);
-    //}
-
     const msgRef = doc(collection(firestore, "messages"));
     await setDoc(msgRef, {
       uid: user.uid,
       displayName: user.displayName,
       text: inputValue,
-      createdAt: timeData,
+      createdAt: serverTimestamp(),
+    }).then(() => {
+      chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
+      setInputValue("");
+      setSendLoading(false);
     });
-
-    chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
-    setInputValue("");
-    setSendLoading(false);
   };
 
   const handleInputValueChange = (e) => {

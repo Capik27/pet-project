@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Grid, Box, CircularProgress } from "@mui/material";
+import { CHAT_MIN_WIDTH } from "../utils/consts";
 
 export const AppLoader = () => {
   return (
@@ -35,4 +36,5 @@ export const ChatLoader = () => {
     </Box>
   );
 };
+
 //width: 50

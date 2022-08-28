@@ -4,6 +4,18 @@
   box-sizing: border-box;
 }
 
+@keyframes msgFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+.msgAnimation {
+  animation: msgFade 0.44s;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   background-color: transparent;
