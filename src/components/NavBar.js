@@ -71,11 +71,3 @@ export const NavBar = () => {
     </Box>
   );
 };
-
-const x = (
-  <NavLink to={REGISTER_ROUTE}>
-    <Button variant="contained" color="secondary">
-      Sing On
-    </Button>
-  </NavLink>
-);

@@ -8,6 +8,7 @@ import {
   collection,
   orderBy,
 } from "firebase/firestore";
+import { formatInTimeZone } from "date-fns-tz";
 //-----------------------
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -22,7 +23,12 @@ import {
 //-----------------------------
 import { Context } from "../index.js";
 import { ChatLoader } from "./Loader.js";
-import { BG_CHAT_COLOR, CHAT_MIN_WIDTH } from "../utils/consts";
+import {
+  BG_CHAT_COLOR,
+  CHAT_MY_MSG_BG_COLOR,
+  CHAT_OTHER_MSG_BG_COLOR,
+  CHAT_MIN_WIDTH,
+} from "../utils/consts";
 import { datasort, getDateFromMessage } from "../utils/datamethods";
 
 export const Chat = () => {
@@ -54,7 +60,9 @@ export const Chat = () => {
             display: "inline-flex",
             alignSelf: user.uid === message.uid ? "flex-end" : "flex-start",
             backgroundColor:
-              user.uid === message.uid ? "Ivory" : "LavenderBlush",
+              user.uid === message.uid
+                ? CHAT_MY_MSG_BG_COLOR
+                : CHAT_OTHER_MSG_BG_COLOR,
             flexDirection: "column",
             padding: "0 5px",
           }}
@@ -82,26 +90,33 @@ export const Chat = () => {
     e.preventDefault();
     setSendLoading(true);
 
-    // const hh = new Date(2022, 8, 27, 22, 49, 0, 0);
-    // console.log("hhs", hh, hh.getTimezoneOffset());
+    //const hh =
+    //const fhh = formatInTimeZone(Timestamp.now().toDate(), "Europe/Moscow", "yyyy-MM-dd HH:mm:ss zzz");
+    //console.log("fhhs/:", hh, typeof hh);
 
-    let timeData = Timestamp.now().toDate();
-    console.log(timeData);
-    console.log(timeData.getTimezoneOffset());
-    const USER_timeDiffmins = timeData.getTimezoneOffset();
-    const MSK_timeDiffmins = -180;
-    if (USER_timeDiffmins !== MSK_timeDiffmins) {
-      const timeDiff =
-        (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60 - 1;
-      timeData.setHours(timeData.getHours() - timeDiff);
-    }
+    let timeData = new Date(
+      formatInTimeZone(
+        Timestamp.now().toDate(),
+        "Europe/Moscow",
+        "yyyy-MM-dd HH:mm:ss zzz"
+      )
+    );
+
+    //console.log(timeData);
+    //console.log(timeData.getTimezoneOffset());
+    //const USER_timeDiffmins = timeData.getTimezoneOffset();
+    //const MSK_timeDiffmins = -180;
+    //if (USER_timeDiffmins !== MSK_timeDiffmins) {
+    //  const timeDiff =
+    //    (Math.abs(USER_timeDiffmins) + MSK_timeDiffmins) / 60 - 1;
+    //  timeData.setHours(timeData.getHours() - timeDiff);
+    //}
 
     const msgRef = doc(collection(firestore, "messages"));
     await setDoc(msgRef, {
       uid: user.uid,
       displayName: user.displayName,
       text: inputValue,
-      timezoneoff: USER_timeDiffmins,
       createdAt: timeData,
     });
 
@@ -112,14 +127,9 @@ export const Chat = () => {
 
   const handleInputValueChange = (e) => {
     let val = e.target.value;
-    //console.log("val", `|${val}|`, val.length);
-    //if (e.target.value.length > 0) {
-    //  val = e.target.value === " " ? e.target.value : "";
-    //  e.target.value = "";
-    //}
     setInputValue(val);
   };
-  //overflowY: "hidden"
+
   return (
     <Container>
       <Grid
