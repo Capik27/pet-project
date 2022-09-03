@@ -34,11 +34,3 @@ export function getDateFromMessage(d) {
 
   return `(${month} ${date}) at ${hour}:${mins}`;
 }
-// const trueData = d.createdAt.toDate();
-//const DATAx = new Date(
-//  formatInTimeZone(
-//   d.createdAt.toDate(),
-//   "Europe/Moscow",
-//   "yyyy-MM-dd HH:mm:ss zzz"
-// )
-//);

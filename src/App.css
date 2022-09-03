@@ -13,7 +13,7 @@
   }
 }
 .msgAnimation {
-  animation: msgFade 0.44s;
+  animation: msgFade 0.55s;
 }
 
 ::-webkit-scrollbar {
@@ -29,6 +29,9 @@
 
 ::-webkit-scrollbar-track {
   /* -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset; */
-
   background-color: transparent;
+}
+
+.chat_dinamicHeight {
+  height: calc(100vh - 64px);
 }

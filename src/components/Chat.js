@@ -9,8 +9,6 @@ import {
   collection,
   orderBy,
 } from "firebase/firestore";
-import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
-
 //-----------------------
 import LoadingButton from "@mui/lab/LoadingButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -30,6 +28,8 @@ import {
   CHAT_MY_MSG_BG_COLOR,
   CHAT_OTHER_MSG_BG_COLOR,
   CHAT_MIN_WIDTH,
+  CHAT_COMPONENT_HEIGHT,
+  CHAT_MARGIN,
 } from "../utils/consts";
 import { datasort, getDateFromMessage } from "../utils/datamethods";
 
@@ -49,7 +49,7 @@ export const Chat = () => {
 
   useEffect(() => {
     chatWindow.current.scrollTop = chatWindow.current.scrollHeight;
-    inputWindow.current.select();
+    if (!inputValue) inputWindow.current.select();
   }, [messages, sendLoading]);
 
   const messagesList = messages
@@ -122,12 +122,12 @@ export const Chat = () => {
     <Container>
       <Grid
         container
-        mt={1.5}
         gap={1}
         direction={"column"}
+        className="chat_dinamicHeight"
         style={{
-          height: window.innerHeight - 60,
-          maxHeight: window.innerHeight - 60,
+          maxWidth: 700,
+          margin: `${CHAT_MARGIN}px auto`,
           flexWrap: "nowrap",
         }}
       >
@@ -136,7 +136,8 @@ export const Chat = () => {
           variant="outlined"
           style={{
             width: "100%",
-            height: "66vh",
+            flexGrow: 1,
+            minHeight: 128,
             overflowY: "auto",
             overflowX: "hidden",
             background: BG_CHAT_COLOR,
@@ -170,10 +171,9 @@ export const Chat = () => {
           style={{
             display: "flex",
             width: "99%",
-            flexDirection: "column",
             justifyContent: "center",
             alignSelf: "center",
-            gap: 8,
+            gap: CHAT_MARGIN,
           }}
           autoComplete="off"
           onSubmit={sendMessage}
@@ -191,7 +191,6 @@ export const Chat = () => {
             onChange={handleInputValueChange}
           />
           <LoadingButton
-            fullWidth
             type="submit"
             onClick={sendMessage}
             loadingPosition="center"
@@ -200,6 +199,7 @@ export const Chat = () => {
             disabled={!inputValue}
             color="warning"
             variant="contained"
+            style={{ lineHeight: 1 }}
           >
             Send
           </LoadingButton>
@@ -208,3 +208,5 @@ export const Chat = () => {
     </Container>
   );
 };
+
+// window.innerHeight - 100,

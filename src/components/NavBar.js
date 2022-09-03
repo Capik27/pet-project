@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { Container } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 //-----------------------------
@@ -31,8 +32,18 @@ export const NavBar = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color={"warning"}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        maxWidth: 750,
+        margin: "0 auto",
+      }}
+    >
+      <AppBar
+        position="static"
+        color={"warning"}
+        style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}
+      >
         <Toolbar variant={"dense"}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {name}
