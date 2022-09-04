@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -7,16 +7,14 @@ import {
 } from "firebase/auth";
 
 //--------------------------
-import { Container, Grid, Box } from "@mui/material";
+import { Container, Grid, Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 //import Tooltip from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
 //--------------------------
-import { Login } from "./Login";
-import { Context } from "../index.js";
 
 export const Register = () => {
-  //const { auth } = useContext(Context);
+  const [validError, setValidError] = useState("");
   const nameInputWindow = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,6 +24,14 @@ export const Register = () => {
   useEffect(() => {
     nameInputWindow.current.select();
   }, []);
+
+  const errorInsert = (errMsg) => {
+    setValidError(errMsg);
+    const timer = setTimeout(() => {
+      setValidError("");
+      clearTimeout(timer);
+    }, 3000);
+  };
 
   const registerAuth = async () => {
     const auth = getAuth();
@@ -49,30 +55,45 @@ export const Register = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorMessage);
+        errorInsert(errorCode);
       });
   };
 
   const handleClickSubmit = (e) => {
     e.preventDefault();
+    if (validError) return;
 
     //check name + email
     const nameValid = name.length > 0 ? true : false;
+    if (!nameValid) {
+      errorInsert("invalid Name");
+      return;
+    }
+
     const emailValid =
       email.length >= 10 && email.includes("@") && email.includes(".")
         ? true
         : false;
+    if (!emailValid) {
+      errorInsert("invalid Email");
+      return;
+    }
 
     //check passwords
     const passValid =
       pass && pass.length <= 20 && pass.length >= 6 ? true : false;
+    if (!passValid) {
+      errorInsert("invalid Password");
+      return;
+    }
+
     const confirmValid = confirm === pass ? true : false;
+    if (!confirmValid) {
+      errorInsert("invalid Confirm");
+      return;
+    }
 
-    //final validation
-    const validRegister = nameValid && emailValid && passValid && confirmValid;
-
-    // console.log(nameValid, emailValid, passValid, confirmValid);
-    if (validRegister) registerAuth();
+    registerAuth();
   };
 
   const errorEmailState = (value) => {
@@ -189,6 +210,17 @@ export const Register = () => {
             >
               Register
             </Button>
+            {validError && (
+              <Typography
+                variant="h6"
+                component="span"
+                style={{
+                  color: "red",
+                }}
+              >
+                {validError}
+              </Typography>
+            )}
           </Grid>
         </Box>
       </Grid>

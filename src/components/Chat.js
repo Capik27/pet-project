@@ -82,6 +82,7 @@ export const Chat = () => {
                   variant="caption"
                   component="span"
                   style={{
+                    color: "black",
                     marginLeft: 6,
                   }}
                 >
