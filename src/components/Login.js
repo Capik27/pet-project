@@ -85,25 +85,11 @@ export const Login = () => {
 
   return (
     <Container>
-      <Grid
-        container
-        pt={4}
-        direction={"column"}
-        alignItems={"center"}
-        justifySelf={"center"}
-      >
-        <Grid
-          container
-          gap={1}
-          p={1}
-          style={{ width: 210 }}
-          direction={"column"}
-          alignItems={"center"}
-          justifySelf={"center"}
-        >
+      <Grid container style={styles.wrapper}>
+        <Grid container style={styles.mainbox}>
           <LoadingButton
             onClick={loginGoogle}
-            style={{ width: "100%" }}
+            style={styles.googlebutton}
             variant="outlined"
             color="warning"
             size="large"
@@ -113,15 +99,9 @@ export const Login = () => {
             Log in: GOOGLE
           </LoadingButton>
 
-          <hr style={{ width: "50%" }} />
+          <hr style={styles.hr} />
           <Box component="form" noValidate autoComplete="off">
-            <Grid
-              container
-              gap={1}
-              direction={"column"}
-              alignItems={"center"}
-              justifySelf={"center"}
-            >
+            <Grid container style={styles.formbox}>
               <TextField
                 fullWidth
                 label="Email"
@@ -155,7 +135,7 @@ export const Login = () => {
                 onClick={loginDefault}
                 variant="contained"
                 color="warning"
-                style={{ width: "60%" }}
+                style={styles.logindefault}
                 loadingPosition="center"
                 loading={btnLoading}
                 disabled={!email || !pass}
@@ -163,13 +143,7 @@ export const Login = () => {
                 Log in
               </LoadingButton>
               {isError && (
-                <Typography
-                  variant="h6"
-                  component="span"
-                  style={{
-                    color: "red",
-                  }}
-                >
+                <Typography variant="h6" component="span" style={styles.error}>
                   {errMessage === "too-many-requests"
                     ? "Try later"
                     : errMessage}
@@ -181,4 +155,31 @@ export const Login = () => {
       </Grid>
     </Container>
   );
+};
+
+const flexcolumnstyles = {
+  flexDirection: "column",
+  alignItems: "center",
+  justifySelf: "center",
+};
+
+const styles = {
+  wrapper: {
+    paddingTop: 32,
+    ...flexcolumnstyles,
+  },
+  mainbox: {
+    gap: 8,
+    padding: 8,
+    width: 210,
+    ...flexcolumnstyles,
+  },
+  formbox: {
+    gap: 8,
+    ...flexcolumnstyles,
+  },
+  googlebutton: { width: "100%" },
+  logindefault: { width: "60%" },
+  hr: { width: "50%" },
+  error: { color: "red" },
 };

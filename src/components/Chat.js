@@ -28,10 +28,9 @@ import {
   CHAT_MY_MSG_BG_COLOR,
   CHAT_OTHER_MSG_BG_COLOR,
   CHAT_MIN_WIDTH,
-  CHAT_COMPONENT_HEIGHT,
   CHAT_MARGIN,
 } from "../utils/consts";
-import { datasort, getDateFromMessage } from "../utils/datamethods";
+import { getDateFromMessage } from "../utils/datamethods";
 
 export const Chat = () => {
   const { auth, firestore } = useContext(Context);
@@ -60,19 +59,7 @@ export const Chat = () => {
               className="msgAnimation"
               variant="outlined"
               key={index}
-              style={{
-                width: "fit-content",
-                height: "min-content",
-                minWidth: CHAT_MIN_WIDTH,
-                display: "inline-flex",
-                alignSelf: user.uid === message.uid ? "flex-end" : "flex-start",
-                backgroundColor:
-                  user.uid === message.uid
-                    ? CHAT_MY_MSG_BG_COLOR
-                    : CHAT_OTHER_MSG_BG_COLOR,
-                flexDirection: "column",
-                padding: "0 5px",
-              }}
+              style={messageStyle(user.uid === message.uid)}
             >
               <Typography variant="subtitle2" component="div">
                 {user.uid === message.uid
@@ -81,10 +68,7 @@ export const Chat = () => {
                 <Typography
                   variant="caption"
                   component="span"
-                  style={{
-                    color: "black",
-                    marginLeft: 6,
-                  }}
+                  style={styles.messagedata}
                 >
                   {getDateFromMessage(message)}
                 </Typography>
@@ -121,61 +105,19 @@ export const Chat = () => {
 
   return (
     <Container>
-      <Grid
-        container
-        gap={1}
-        direction={"column"}
-        className="chat_dinamicHeight"
-        style={{
-          maxWidth: 700,
-          margin: `${CHAT_MARGIN}px auto`,
-          flexWrap: "nowrap",
-        }}
-      >
-        <Paper
-          ref={chatWindow}
-          variant="outlined"
-          style={{
-            width: "100%",
-            flexGrow: 1,
-            minHeight: 128,
-            overflowY: "auto",
-            overflowX: "hidden",
-            background: BG_CHAT_COLOR,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              padding: 4,
-              height: "100%",
-            }}
-          >
+      <Grid container className="chat_dinamicHeight" style={styles.chatpage}>
+        <Paper ref={chatWindow} variant="outlined" style={styles.chatwindow}>
+          <div style={styles.chatwindowwapper}>
             {loading && <ChatLoader />}
             {messages && messagesList}
-            {messages && (
-              <div
-                style={{
-                  borderTop: `1px solid ${BG_CHAT_COLOR}`,
-                  opacity: "0",
-                }}
-              />
-            )}
+            {messages && <div style={styles.chatlastelement} />}
             {error && <strong>Error: {JSON.stringify(error)}</strong>}
           </div>
         </Paper>
         <Box
           component="form"
           noValidate
-          style={{
-            display: "flex",
-            width: "99%",
-            justifyContent: "center",
-            alignSelf: "center",
-            gap: CHAT_MARGIN,
-          }}
+          style={styles.form}
           autoComplete="off"
           onSubmit={sendMessage}
         >
@@ -200,7 +142,7 @@ export const Chat = () => {
             disabled={!inputValue}
             color="warning"
             variant="contained"
-            style={{ lineHeight: 1 }}
+            style={styles.sendbutton}
           >
             Send
           </LoadingButton>
@@ -210,4 +152,59 @@ export const Chat = () => {
   );
 };
 
-// window.innerHeight - 100,
+const styles = {
+  message: {
+    width: "fit-content",
+    height: "min-content",
+    minWidth: CHAT_MIN_WIDTH,
+    display: "inline-flex",
+    flexDirection: "column",
+    padding: "0 5px",
+  },
+  messagedata: {
+    color: "black",
+    marginLeft: 6,
+  },
+  chatpage: {
+    gap: 8,
+    flexDirection: "column",
+    maxWidth: 700,
+    margin: `${CHAT_MARGIN}px auto`,
+    flexWrap: "nowrap",
+  },
+  chatwindow: {
+    width: "100%",
+    flexGrow: 1,
+    minHeight: 128,
+    overflowY: "auto",
+    overflowX: "hidden",
+    background: BG_CHAT_COLOR,
+  },
+  chatwindowwapper: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+    padding: 4,
+    height: "100%",
+  },
+  chatlastelement: {
+    borderTop: `1px solid ${BG_CHAT_COLOR}`,
+    opacity: "0",
+  },
+  form: {
+    display: "flex",
+    width: "99%",
+    justifyContent: "center",
+    alignSelf: "center",
+    gap: CHAT_MARGIN,
+  },
+  sendbutton: { lineHeight: 1 },
+};
+
+const messageStyle = (isUser) => {
+  return {
+    ...styles.message,
+    alignSelf: isUser ? "flex-end" : "flex-start",
+    backgroundColor: isUser ? CHAT_MY_MSG_BG_COLOR : CHAT_OTHER_MSG_BG_COLOR,
+  };
+};

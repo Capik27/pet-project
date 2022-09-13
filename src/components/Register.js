@@ -110,28 +110,9 @@ export const Register = () => {
 
   return (
     <Container>
-      <Grid
-        container
-        pt={4}
-        direction={"column"}
-        alignItems={"center"}
-        justifySelf={"center"}
-      >
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          gap={1}
-          p={1}
-          style={{ width: 210 }}
-        >
-          <Grid
-            container
-            gap={1}
-            direction={"column"}
-            alignItems={"center"}
-            justifySelf={"center"}
-          >
+      <Grid container style={styles.wrapper}>
+        <Box component="form" noValidate autoComplete="off" style={styles.form}>
+          <Grid container style={styles.formwrapper}>
             <TextField
               fullWidth
               error={!name}
@@ -206,18 +187,12 @@ export const Register = () => {
               onClick={handleClickSubmit}
               variant="contained"
               color="warning"
-              style={{ width: "60%" }}
+              style={styles.submit}
             >
               Register
             </Button>
             {validError && (
-              <Typography
-                variant="h6"
-                component="span"
-                style={{
-                  color: "red",
-                }}
-              >
+              <Typography variant="h6" component="span" style={styles.error}>
                 {validError}
               </Typography>
             )}
@@ -226,4 +201,27 @@ export const Register = () => {
       </Grid>
     </Container>
   );
+};
+
+const flexcolumnstyles = {
+  flexDirection: "column",
+  alignItems: "center",
+  justifySelf: "center",
+};
+
+const styles = {
+  wrapper: {
+    paddingTop: 32,
+    ...flexcolumnstyles,
+  },
+  form: {
+    padding: 8,
+    width: 210,
+  },
+  formwrapper: {
+    gap: 8,
+    ...flexcolumnstyles,
+  },
+  submit: { width: "60%" },
+  error: { color: "red" },
 };

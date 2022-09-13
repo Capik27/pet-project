@@ -1,12 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 //-----------------------------
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setRegPageTrueAction,
+  setRegPageFalseAction,
+  setRegPageToggleAction,
+} from "./../store/navbarSlice";
+//-----------------------------
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { Container } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 //-----------------------------
@@ -14,38 +20,32 @@ import { Context } from "../index.js";
 import { REGISTER_ROUTE, LOGIN_ROUTE } from "../utils/consts";
 
 export const NavBar = () => {
-  const [registerPage, setRegisterPage] = useState(false);
+  const dispatch = useDispatch();
+  const registerPage = useSelector((state) => state.navigation.isregpage);
   const { auth } = useContext(Context);
   const [user] = useAuthState(auth);
   const name = user ? (user.displayName ? user.displayName : "Guest") : "Guest";
 
   const handleClickRegister = () => {
-    setRegisterPage(true);
+    dispatch(setRegPageTrueAction());
   };
   const handleClickLogin = () => {
-    setRegisterPage(false);
+    dispatch(setRegPageFalseAction());
   };
 
   const handleClickLogout = () => {
-    if (registerPage) setRegisterPage((prevstate) => !prevstate);
+    if (registerPage) {
+      dispatch(setRegPageToggleAction());
+    }
+
     signOut(auth);
   };
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        maxWidth: 750,
-        margin: "0 auto",
-      }}
-    >
-      <AppBar
-        position="static"
-        color={"warning"}
-        style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}
-      >
+    <Box style={styles.navbarbox}>
+      <AppBar position="static" color={"warning"} style={styles.appbar}>
         <Toolbar variant={"dense"}>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" style={styles.name}>
             {name}
           </Typography>
           {user ? (
@@ -57,7 +57,7 @@ export const NavBar = () => {
               Logout
             </Button>
           ) : registerPage ? (
-            <NavLink to={LOGIN_ROUTE} style={{ textDecoration: "none" }}>
+            <NavLink to={LOGIN_ROUTE} style={styles.nodecoration}>
               <Button
                 onClick={handleClickLogin}
                 variant="contained"
@@ -67,7 +67,7 @@ export const NavBar = () => {
               </Button>
             </NavLink>
           ) : (
-            <NavLink to={REGISTER_ROUTE} style={{ textDecoration: "none" }}>
+            <NavLink to={REGISTER_ROUTE} style={styles.nodecoration}>
               <Button
                 onClick={handleClickRegister}
                 variant="contained"
@@ -81,4 +81,11 @@ export const NavBar = () => {
       </AppBar>
     </Box>
   );
+};
+
+const styles = {
+  navbarbox: { flexGrow: 1, maxWidth: 750, margin: "0 auto" },
+  appbar: { borderBottomLeftRadius: 4, borderBottomRightRadius: 4 },
+  name: { flexGrow: 1 },
+  nodecoration: { textDecoration: "none" },
 };
