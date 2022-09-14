@@ -1,7 +1,14 @@
-import { LOGIN_ROUTE, REGISTER_ROUTE, CHAT_ROUTE } from "../utils/consts";
+import {
+  LOGIN_ROUTE,
+  REGISTER_ROUTE,
+  CHAT_ROUTE,
+  PERSONALAREA_ROUTE,
+  CALENDAR_ROUTE,
+} from "../utils/consts";
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { Chat } from "./Chat";
+import { PersonalArea } from "./PersonalArea";
 
 export const publicRoutes = [
   {
@@ -16,7 +23,15 @@ export const publicRoutes = [
 
 export const privateRoutes = [
   {
-    path: CHAT_ROUTE,
+    path: PERSONALAREA_ROUTE + "*",
+    Component: <PersonalArea />,
+  },
+  {
+    path: PERSONALAREA_ROUTE + CHAT_ROUTE,
     Component: <Chat />,
+  },
+  {
+    path: PERSONALAREA_ROUTE + CALENDAR_ROUTE,
+    Component: <div>CALENDAR</div>,
   },
 ];

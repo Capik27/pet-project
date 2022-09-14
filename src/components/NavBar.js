@@ -8,6 +8,7 @@ import {
   setRegPageTrueAction,
   setRegPageFalseAction,
   setRegPageToggleAction,
+  setInsideFalseAction,
 } from "./../store/navbarSlice";
 //-----------------------------
 import AppBar from "@mui/material/AppBar";
@@ -17,11 +18,16 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 //-----------------------------
 import { Context } from "../index.js";
-import { REGISTER_ROUTE, LOGIN_ROUTE } from "../utils/consts";
+import {
+  REGISTER_ROUTE,
+  LOGIN_ROUTE,
+  PERSONALAREA_ROUTE,
+} from "../utils/consts";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
   const registerPage = useSelector((state) => state.navigation.isregpage);
+  const isInside = useSelector((state) => state.navigation.isinside);
   const { auth } = useContext(Context);
   const [user] = useAuthState(auth);
   const name = user ? (user.displayName ? user.displayName : "Guest") : "Guest";
@@ -37,8 +43,11 @@ export const NavBar = () => {
     if (registerPage) {
       dispatch(setRegPageToggleAction());
     }
-
     signOut(auth);
+  };
+
+  const handleClickInsideOut = () => {
+    dispatch(setInsideFalseAction());
   };
 
   return (
@@ -49,13 +58,25 @@ export const NavBar = () => {
             {name}
           </Typography>
           {user ? (
-            <Button
-              onClick={handleClickLogout}
-              variant="contained"
-              color="secondary"
-            >
-              Logout
-            </Button>
+            isInside ? (
+              <NavLink to={PERSONALAREA_ROUTE} style={styles.nodecoration}>
+                <Button
+                  onClick={handleClickInsideOut}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Back
+                </Button>
+              </NavLink>
+            ) : (
+              <Button
+                onClick={handleClickLogout}
+                variant="contained"
+                color="secondary"
+              >
+                Logout
+              </Button>
+            )
           ) : registerPage ? (
             <NavLink to={LOGIN_ROUTE} style={styles.nodecoration}>
               <Button

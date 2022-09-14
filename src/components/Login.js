@@ -41,9 +41,9 @@ export const Login = () => {
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        //const token = credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        //const user = result.user;
       })
       .catch((error) => {
         setGBtnLoad(false);
@@ -57,12 +57,12 @@ export const Login = () => {
       .then((userCredential) => {
         // Signed in
         setBtnLoading(false);
-        const user = userCredential.user;
+        //const user = userCredential.user;
       })
       .catch((error) => {
         setBtnLoading(false);
         const errorCode = error.code;
-        const errorMessage = error.message;
+        //const errorMessage = error.message;
         //
         setIsError(true);
         setErrMessage(errorCode.slice(5));

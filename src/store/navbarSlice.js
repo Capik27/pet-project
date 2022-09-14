@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isregpage: false,
+  isinside: false,
 };
 
 const navbarSlice = createSlice({
@@ -17,6 +18,13 @@ const navbarSlice = createSlice({
     setRegPageToggleAction(state) {
       state.isregpage = !state.isregpage;
     },
+    //////
+    setInsideTrueAction(state) {
+      state.isinside = true;
+    },
+    setInsideFalseAction(state) {
+      state.isinside = false;
+    },
   },
 });
 
@@ -25,4 +33,6 @@ export const {
   setRegPageTrueAction,
   setRegPageFalseAction,
   setRegPageToggleAction,
+  setInsideTrueAction,
+  setInsideFalseAction,
 } = navbarSlice.actions;

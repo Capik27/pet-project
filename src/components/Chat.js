@@ -107,7 +107,7 @@ export const Chat = () => {
     <Container>
       <Grid container className="chat_dinamicHeight" style={styles.chatpage}>
         <Paper ref={chatWindow} variant="outlined" style={styles.chatwindow}>
-          <div style={styles.chatwindowwapper}>
+          <div style={styles.chatwindowwrapper}>
             {loading && <ChatLoader />}
             {messages && messagesList}
             {messages && <div style={styles.chatlastelement} />}
@@ -180,7 +180,7 @@ const styles = {
     overflowX: "hidden",
     background: BG_CHAT_COLOR,
   },
-  chatwindowwapper: {
+  chatwindowwrapper: {
     display: "flex",
     flexDirection: "column",
     gap: 4,
