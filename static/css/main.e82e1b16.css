@@ -1,2 +1,0 @@
-*{box-sizing:border-box;margin:0;padding:0}@-webkit-keyframes msgFade{0%{opacity:0}to{opacity:100%}}@keyframes msgFade{0%{opacity:0}to{opacity:100%}}.msgAnimation{-webkit-animation:msgFade .55s;animation:msgFade .55s}::-webkit-scrollbar{background-color:initial;width:4px}::-webkit-scrollbar-thumb{background-color:#4428b42f;border:.5px solid hsla(0,0%,100%,.062);border-radius:2px}::-webkit-scrollbar-track{background-color:initial}.chat_dinamicHeight{height:calc(100vh - 64px)}
-/*# sourceMappingURL=main.e82e1b16.css.map*/
