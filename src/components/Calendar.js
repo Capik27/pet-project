@@ -32,9 +32,13 @@ export default function Calendar() {
     const docRef = doc(firestore, "calendars", user.uid);
     const docSnap = await getDoc(docRef);
     const list = docSnap.data();
-    const msg = list[getDateStringKey(date)];
-    if (msg) {
-      setNotetext(msg);
+    if (list) {
+      const msg = list[getDateStringKey(date)];
+      if (msg) {
+        setNotetext(msg);
+      } else {
+        setNotetext("");
+      }
     } else {
       setNotetext("");
     }
@@ -81,8 +85,9 @@ export default function Calendar() {
           renderInput={(params) => <TextField color="warning" {...params} />}
         />
       </LocalizationProvider>
-      {notelistLoading && <ChatLoader style={{ marginTop: 40 }} />}
-      {notelist && (
+      {notelistLoading ? (
+        <ChatLoader style={{ marginTop: 40 }} />
+      ) : (
         <Box
           component="form"
           noValidate
@@ -107,7 +112,7 @@ export default function Calendar() {
             loadingPosition="center"
             endIcon={<SendIcon />}
             loading={sendLoading}
-            disabled={!notetext || notelist[getDateStringKey(date)] == notetext}
+            disabled={!notetext}
             color="warning"
             variant="contained"
           >
@@ -115,6 +120,7 @@ export default function Calendar() {
           </LoadingButton>
         </Box>
       )}
+
       {saved && (
         <Typography
           variant="h6"
@@ -142,3 +148,5 @@ const styles = {
     color: "#ed6c02",
   },
 };
+
+//notelist[getDateStringKey(date)] == notetext
