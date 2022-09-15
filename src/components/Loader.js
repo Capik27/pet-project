@@ -20,7 +20,7 @@ export const AppLoader = () => {
   );
 };
 
-export const ChatLoader = () => {
+export const ChatLoader = ({ ...props }) => {
   return (
     <Box
       style={{
@@ -30,6 +30,7 @@ export const ChatLoader = () => {
         justifyContent: "center",
         alignItems: "center",
       }}
+      {...props}
     >
       <CircularProgress style={{ height: 50, width: 50 }} />
     </Box>

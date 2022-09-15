@@ -4,6 +4,21 @@
   box-sizing: border-box;
 }
 
+@keyframes msgSaved {
+  0% {
+    opacity: 0%;
+  }
+  50% {
+    opacity: 75%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+.msgSavedAnimation {
+  animation: msgSaved 0.8s;
+}
+
 @keyframes msgFade {
   0% {
     opacity: 0;
@@ -34,4 +49,9 @@
 
 .chat_dinamicHeight {
   height: calc(100vh - 64px);
+}
+
+.shadow {
+  box-shadow: rgb(0 0 0 / 20%) 0px 5px 5px -3px,
+    rgb(0 0 0 / 14%) 0px 8px 10px 1px, rgb(0 0 0 / 12%) 0px 3px 14px 2px;
 }

@@ -34,3 +34,14 @@ export function getDateFromMessage(d) {
 
   return `(${month} ${date}) at ${hour}:${mins}`;
 }
+
+export function getDateStringKey(d) {
+  //console.log("d", d.createdAt.toDate());
+  const trueData = d; //d.createdAt.toDate();
+  //console.log("truedata", trueData);
+  const date = trueData.getDate();
+  const month = trueData.getMonth();
+  const year = trueData.getFullYear();
+  //console.log("y/m/d", year, month, date);
+  return `${year}/${month}/${date}`;
+}

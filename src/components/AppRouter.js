@@ -16,14 +16,20 @@ export const AppRouter = () => {
       {privateRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} />
       ))}
-      <Route path={"*"} element={<Navigate to={PERSONALAREA_ROUTE} />} />
+      <Route
+        path={"*"}
+        element={<Navigate to={PERSONALAREA_ROUTE} replace={true} />}
+      />
     </Routes>
   ) : (
     <Routes>
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} element={Component} />
       ))}
-      <Route path={"*"} element={<Navigate to={LOGIN_ROUTE} />} />
+      <Route
+        path={"*"}
+        element={<Navigate to={LOGIN_ROUTE} replace={true} />}
+      />
     </Routes>
   );
 };
